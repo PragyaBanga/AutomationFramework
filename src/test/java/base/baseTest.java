@@ -28,6 +28,7 @@ public class baseTest {
 	prop.load(fr);
 	}
 	
+	
 		if (prop.getProperty("browser").equalsIgnoreCase("chrome"))
          {
             driver = new ChromeDriver(); // base

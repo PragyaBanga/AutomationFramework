@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -16,7 +17,7 @@ public class first_test extends baseTest {
     ExtentReports extent;
     ExtentTest test;
     
-    @BeforeMethod
+    @BeforeClass	
     public void setUpExtent() {
         ExtentSparkReporter htmlReporter = new ExtentSparkReporter("extentReport.html");
         extent = new ExtentReports();
@@ -28,13 +29,13 @@ public class first_test extends baseTest {
         test = extent.createTest("Login Test - " + name);
         try {
             driver.manage().window().maximize();
-            driver.findElement(By.id("user-name")).sendKeys("standard_user");//will use name here
+            driver.findElement(By.id("user-name")).sendKeys(name);//will use name here
             Thread.sleep(3000);
-            driver.findElement(By.id("password")).sendKeys("secret_sauce");//  will use pass here
+            driver.findElement(By.id("password")).sendKeys(pass);//  will use pass here
             driver.findElement(By.id("login-button")).click();
             
             test.log(Status.PASS, "Login successful for: " + name);
-        } catch (Exception e) {
+          }	 catch (Exception e) {
             test.log(Status.FAIL, "Login failed for: " + name );
         }
     }
@@ -43,11 +44,14 @@ public class first_test extends baseTest {
     public void tearDownExtent() {
         extent.flush();
     }
-    
+    @AfterMethod
+    public void closeReport() {
+    	extent.flush();
+    	}
     @DataProvider(name = "testdata")
     public Object[][] data() {
         return new Object[][] {
-            { "pragya@yopmail.com", "Pragya@123" },
+            { "standard_user", "secret_sauce" },
             { "p@yopmail.com", "Pragya@123" }
             
         };
